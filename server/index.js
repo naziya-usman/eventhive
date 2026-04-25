@@ -14,6 +14,7 @@ const express = require("express");
 const cors = require("cors");
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
+const eventRoutes = require("./routes/eventRoutes");
 
 /**
  * Initialize Express Application
@@ -32,6 +33,7 @@ app.use("/uploads", express.static("public/uploads"));
 
 // Routes
 app.use("/api/auth", authRoutes);
+app.use("/api/events", eventRoutes);
 
 /**
  * Connect to Database
