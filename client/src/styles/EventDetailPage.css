@@ -1,16 +1,17 @@
 .event-detail-page {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 8rem 2rem;
 }
 
 .event-banner {
   position: relative;
   width: 100%;
-  height: 400px;
-  border-radius: 12px;
+  height: 700px;
+  border-radius: var(--radius-lg);
   overflow: hidden;
-  margin-bottom: 2rem;
+  margin-bottom: 6rem;
+  box-shadow: var(--shadow-lg);
 }
 
 .event-banner img {
@@ -21,126 +22,130 @@
 
 .event-category-badge {
   position: absolute;
-  top: 20px;
-  left: 20px;
-  background: rgba(0, 0, 0, 0.7);
-  color: #fff;
-  padding: 6px 16px;
-  border-radius: 20px;
-  text-transform: capitalize;
-  font-weight: 500;
+  top: 2.5rem;
+  left: 2.5rem;
+  background: var(--primary);
+  color: var(--white);
+  padding: 0.75rem 2rem;
+  border-radius: var(--radius-full);
+  text-transform: lowercase;
+  font-weight: 700;
+  font-size: 1rem;
 }
 
 .event-info-container {
   display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 3rem;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 8rem;
 }
 
 .event-main-content h1 {
-  font-size: 2.5rem;
+  font-size: 3rem;
   margin-bottom: 1.5rem;
-  color: #2d3436;
+  color: var(--primary);
+  line-height: 1.1;
 }
 
 .event-description {
-  font-size: 1.1rem;
-  line-height: 1.6;
-  color: #636e72;
-  margin-bottom: 2.5rem;
-  white-space: pre-wrap;
-}
-
-.event-details-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 2rem;
-  background: #f8f9fa;
-  padding: 2rem;
-  border-radius: 12px;
-}
-
-.detail-item {
-  display: flex;
-  flex-direction: column;
-}
-
-.detail-label {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: #b2bec3;
-  text-transform: uppercase;
-  margin-bottom: 0.5rem;
-}
-
-.detail-value {
-  font-size: 1.1rem;
-  color: #2d3436;
+  font-family: var(--font-sans);
+  font-size: 1.15rem;
+  line-height: 1.8;
+  color: var(--text-main);
+  margin-bottom: 3rem;
   font-weight: 500;
 }
 
-.detail-value.full {
-  color: #d63031;
-}
 
 .registration-card {
   position: sticky;
-  top: 2rem;
-  background: #fff;
-  border: 1px solid #eee;
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-  text-align: center;
+  top: 10rem;
+  background: var(--white);
+  padding: 4rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
 }
 
-.registration-card h3 {
-  margin-top: 0;
-  margin-bottom: 1rem;
-  color: #2d3436;
+.info-section {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  margin-bottom: 4rem;
+}
+
+.info-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 2rem;
+}
+
+.info-icon {
+  font-size: 2rem;
+  color: var(--secondary);
+}
+
+.info-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: lowercase;
+  margin-bottom: 0.5rem;
+}
+
+.info-value {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  color: var(--text-main);
+  font-weight: 700;
+}
+
+.price-section {
+  margin-bottom: 4rem;
+  padding-top: 3rem;
+  border-top: 1px solid var(--border);
+}
+
+.price-label {
+  font-size: 1rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  text-transform: lowercase;
 }
 
 .price-tag {
-  font-size: 2rem;
+  font-family: var(--font-serif);
+  font-size: 4rem;
+  color: var(--secondary);
   font-weight: 700;
-  color: #764ba2;
-  margin-bottom: 1.5rem;
 }
 
 .register-button {
   width: 100%;
-  padding: 1rem;
-  font-size: 1.1rem;
-  font-weight: 600;
-  background: #764ba2;
-  color: #fff;
+  padding: 1.75rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  background: var(--primary);
+  color: var(--white);
   border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.2s;
+  border-radius: var(--radius-full);
 }
 
 .register-button:hover:not(:disabled) {
-  background: #667eea;
+  background: var(--secondary);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
 }
 
-.register-button.disabled {
-  background: #b2bec3;
-  cursor: not-allowed;
-}
-
-.full-notice {
-  color: #d63031;
-  font-size: 0.9rem;
-  margin-top: 1rem;
-}
-
-@media (max-width: 768px) {
+@media (max-width: 992px) {
   .event-info-container {
     grid-template-columns: 1fr;
+    gap: 6rem;
   }
-  
+
   .event-banner {
-    height: 250px;
+    height: 450px;
+  }
+
+  .event-main-content h1 {
+    font-size: 3.5rem;
   }
 }

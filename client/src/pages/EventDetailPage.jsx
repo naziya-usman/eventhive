@@ -92,37 +92,45 @@ const EventDetailPage = () => {
         <div className="event-main-content">
           <h1>{event.title}</h1>
           <p className="event-description">{event.description}</p>
-
-          <div className="event-details-grid">
-            <div className="detail-item">
-              <span className="detail-label">Date & Time</span>
-              <span className="detail-value">{formattedDate}</span>
-            </div>
-            <div className="detail-item">
-              <span className="detail-label">Location</span>
-              <span className="detail-value">{event.location}</span>
-            </div>
-            <div className="detail-item">
-              <span className="detail-label">Price</span>
-              <span className="detail-value">
-                {event.price === 0 ? "Free" : `$${event.price}`}
-              </span>
-            </div>
-            <div className="detail-item">
-              <span className="detail-label">Availability</span>
-              <span className={`detail-value ${isFull ? "full" : ""}`}>
-                {isFull ? "Event Full" : `${spotsLeft} spots left`}
-              </span>
-            </div>
-          </div>
         </div>
 
         <aside className="registration-sidebar">
           <div className="registration-card">
-            <h3>Registration</h3>
-            <p className="price-tag">
-              {event.price === 0 ? "Free" : `$${event.price}`}
-            </p>
+            <div className="info-section">
+              <div className="info-row">
+                <span className="info-icon">📅</span>
+                <div className="info-text">
+                  <span className="info-label">Date & Time</span>
+                  <span className="info-value">{formattedDate}</span>
+                </div>
+              </div>
+
+              <div className="info-row">
+                <span className="info-icon">📍</span>
+                <div className="info-text">
+                  <span className="info-label">Location</span>
+                  <span className="info-value">{event.location}</span>
+                </div>
+              </div>
+
+              <div className="info-row">
+                <span className="info-icon">🎟️</span>
+                <div className="info-text">
+                  <span className="info-label">Availability</span>
+                  <span className={`info-value ${isFull ? "full" : ""}`}>
+                    {isFull ? "Event Full" : `${spotsLeft} spots left`}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div className="price-section">
+              <span className="price-label">Price</span>
+              <p className="price-tag">
+                {event.price === 0 ? "Free" : `$${event.price}`}
+              </p>
+            </div>
+
             <button
               className={`register-button ${isFull ? "disabled" : ""}`}
               onClick={handleRegister}
