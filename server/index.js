@@ -12,6 +12,7 @@ require("dotenv").config();
  */
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const eventRoutes = require("./routes/eventRoutes");
@@ -30,7 +31,10 @@ const app = express();
  */
 app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 app.use(express.json());
-app.use("/uploads", express.static("public/uploads"));
+
+// Serve static files from the 'public' directory
+// Using path.join(__dirname, 'public') ensures the path is absolute and correct
+app.use(express.static(path.join(__dirname, "public")));
 
 // Routes
 app.use("/api/auth", authRoutes);

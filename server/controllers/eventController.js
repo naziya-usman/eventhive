@@ -38,7 +38,8 @@ exports.createEvent = async (req, res) => {
         };
 
         if (req.file) {
-            eventData.bannerImage = req.file.path;
+            // Store clean URL path instead of local file system path
+            eventData.bannerImage = `/uploads/${req.file.filename}`;
         }
 
         const event = await Event.create(eventData);
@@ -65,7 +66,8 @@ exports.updateEvent = async (req, res) => {
         }
 
         if (req.file) {
-            req.body.bannerImage = req.file.path;
+            // Store clean URL path
+            req.body.bannerImage = `/uploads/${req.file.filename}`;
         }
 
         event = await Event.findByIdAndUpdate(req.params.id, req.body, {
