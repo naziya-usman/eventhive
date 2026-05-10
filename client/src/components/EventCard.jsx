@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { formatDate } from '../utils/formatDate';
 import { getImageUrl } from '../utils/getImageUrl';
-import './EventCard.css';
+import '../styles/EventCard.css';
 
 const EventCard = ({ event }) => {
   const { _id, title, bannerImage, category, date, location, price } = event;

@@ -3,7 +3,7 @@ import api from '../utils/api';
 import EventCard from '../components/EventCard';
 import LoadingSpinner from '../components/LoadingSpinner';
 import ErrorMessage from '../components/ErrorMessage';
-import './HomePage.css';
+import '../styles/HomePage.css';
 
 const HomePage = () => {
   const [events, setEvents] = useState([]);

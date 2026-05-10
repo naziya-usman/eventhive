@@ -6,7 +6,7 @@ import { formatDate } from "../utils/formatDate";
 import { getImageUrl } from "../utils/getImageUrl";
 import LoadingSpinner from "../components/LoadingSpinner";
 import ErrorMessage from "../components/ErrorMessage";
-import "./EventDetailPage.css";
+import "../styles/EventDetailPage.css";
 
 const EventDetailPage = () => {
   const { id } = useParams();

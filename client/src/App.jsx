@@ -7,7 +7,7 @@ import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
 import MyTicketsPage from './pages/MyTicketsPage';
 import Navbar from './components/Navbar';
-import './App.css';
+import './styles/App.css';
 
 // ProtectedRoute component
 const ProtectedRoute = () => {
