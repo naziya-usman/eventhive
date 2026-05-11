@@ -33,6 +33,16 @@ const HomePage = () => {
 
   return (
     <div className="home-page">
+      <div className="inspiration-container">
+        <div className="inspiration-box">
+          <span className="inspiration-quote">“</span>
+          <p className="inspiration-text">
+            EventHive is more than just a platform; it's a buzzing community where every gathering becomes a shared story. Discover experiences that inspire, connect, and stay with you long after the lights go down.
+          </p>
+          <span className="inspiration-tag">— the hive mind</span>
+        </div>
+      </div>
+
       <header className="hero-section">
         <h1>Discover Amazing Events</h1>
         <p>Join the best local events and meet new people.</p>

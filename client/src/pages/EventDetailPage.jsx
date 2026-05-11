@@ -88,66 +88,65 @@ const EventDetailPage = () => {
         <div className="event-category-badge">{event.category}</div>
       </div>
 
-      <div className="event-info-container">
+      <header className="event-header">
         <div className="event-main-content">
           <h1>{event.title}</h1>
           <p className="event-description">{event.description}</p>
         </div>
 
-        <aside className="registration-sidebar">
-          <div className="registration-card">
-            <div className="info-section">
-              <div className="info-row">
-                <span className="info-icon">📅</span>
-                <div className="info-text">
-                  <span className="info-label">Date & Time</span>
-                  <span className="info-value">{formattedDate}</span>
-                </div>
-              </div>
-
-              <div className="info-row">
-                <span className="info-icon">📍</span>
-                <div className="info-text">
-                  <span className="info-label">Location</span>
-                  <span className="info-value">{event.location}</span>
-                </div>
-              </div>
-
-              <div className="info-row">
-                <span className="info-icon">🎟️</span>
-                <div className="info-text">
-                  <span className="info-label">Availability</span>
-                  <span className={`info-value ${isFull ? "full" : ""}`}>
-                    {isFull ? "Event Full" : `${spotsLeft} spots left`}
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            <div className="price-section">
-              <span className="price-label">Price</span>
-              <p className="price-tag">
-                {event.price === 0 ? "Free" : `$${event.price}`}
-              </p>
-            </div>
-
-            <button
-              className={`register-button ${isFull ? "disabled" : ""}`}
-              onClick={handleRegister}
-              disabled={isFull || registering}
-            >
-              {registering
-                ? "Processing..."
-                : isFull
-                  ? "Event Full"
-                  : "Register for this Event"}
-            </button>
-            {isFull && (
-              <p className="full-notice">Sorry, all spots have been filled!</p>
-            )}
+        <div className="registration-action-card">
+          <div className="action-price-container">
+            <span className="price-label">Price</span>
+            <p className="price-tag">
+              {event.price === 0 ? "Free" : `$${event.price}`}
+            </p>
           </div>
-        </aside>
-      </div>
+          <button
+            className={`register-button ${isFull ? "disabled" : ""}`}
+            onClick={handleRegister}
+            disabled={isFull || registering}
+          >
+            {registering
+              ? "Processing..."
+              : isFull
+                ? "Event Full"
+                : "Register for this Event"}
+          </button>
+          {isFull && (
+            <p className="full-notice">Sorry, all spots have been filled!</p>
+          )}
+        </div>
+      </header>
+
+      <main className="event-body-content">
+        <section className="details-boxes-grid">
+          <div className="detail-box">
+            <span className="info-icon">📍</span>
+            <div className="info-text">
+              <span className="info-label">Location</span>
+              <span className="info-value">{event.location}</span>
+            </div>
+          </div>
+
+          <div className="detail-box">
+            <span className="info-icon">📅</span>
+            <div className="info-text">
+              <span className="info-label">Date & Time</span>
+              <span className="info-value">{formattedDate}</span>
+            </div>
+          </div>
+
+          <div className="detail-box">
+            <span className="info-icon">🎟️</span>
+            <div className="info-text">
+              <span className="info-label">Availability</span>
+              <span className={`info-value ${isFull ? "full" : ""}`}>
+                {isFull ? "Event Full" : `${spotsLeft} spots left`}
+              </span>
+            </div>
+          </div>
+        </section>
+      </main>
     </div>
   );
 };

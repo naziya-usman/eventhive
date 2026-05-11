@@ -33,17 +33,65 @@
   font-size: 1rem;
 }
 
-.event-info-container {
-  display: grid;
-  grid-template-columns: 1.4fr 1fr;
-  gap: 8rem;
+/* Header Styles */
+.event-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 4rem;
+  margin-bottom: 10rem; /* Increased from 8rem for even more space */
 }
 
-.event-main-content h1 {
-  font-size: 3rem;
-  margin-bottom: 1.5rem;
+.event-title-container {
+  flex: 1;
+}
+
+.event-page-title {
+  font-size: 3.5rem; /* Slightly larger for better hierarchy */
   color: var(--primary);
   line-height: 1.1;
+  margin: 0;
+}
+
+.registration-action-card {
+  flex-shrink: 0;
+  background: var(--bg-card);
+  padding: 3rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  min-width: 360px;
+  text-align: left;
+  border: 1px solid var(--border);
+}
+
+.action-price-container {
+  margin-bottom: 2.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.price-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: lowercase;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.price-tag {
+  font-family: var(--font-serif);
+  font-size: 3.5rem;
+  color: var(--secondary);
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* Body Content Styles */
+.event-body-content {
+  display: flex;
+  flex-direction: column;
+  gap: 5rem;
 }
 
 .event-description {
@@ -51,36 +99,50 @@
   font-size: 1.15rem;
   line-height: 1.8;
   color: var(--text-main);
-  margin-bottom: 3rem;
-  font-weight: 500;
+  max-width: 900px;
+  margin-top: 1rem;
 }
 
-
-.registration-card {
-  position: sticky;
-  top: 10rem;
-  background: var(--white);
-  padding: 4rem;
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lg);
-}
-
-.info-section {
-  display: flex;
-  flex-direction: column;
-  gap: 3rem;
-  margin-bottom: 4rem;
-}
-
-.info-row {
-  display: flex;
-  align-items: flex-start;
+/* Individual Details Boxes Styles */
+.details-boxes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 2rem;
 }
 
+.detail-box {
+  background: var(--bg-card);
+  padding: 2.5rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  border: 1px solid var(--border);
+  transition: all 0.3s ease;
+}
+
+.detail-box:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--secondary);
+}
+
 .info-icon {
-  font-size: 2rem;
-  color: var(--secondary);
+  font-size: 2.5rem;
+  width: 4.5rem;
+  height: 4.5rem;
+  background: var(--bg-main);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  flex-shrink: 0;
+}
+
+.info-text {
+  display: flex;
+  flex-direction: column;
 }
 
 .info-label {
@@ -88,36 +150,19 @@
   font-weight: 700;
   color: var(--text-muted);
   text-transform: lowercase;
+  letter-spacing: 0.05em;
   margin-bottom: 0.5rem;
 }
 
 .info-value {
   font-family: var(--font-serif);
-  font-size: 1.35rem;
+  font-size: 1.25rem;
   color: var(--text-main);
   font-weight: 700;
+  line-height: 1.2;
 }
 
-.price-section {
-  margin-bottom: 4rem;
-  padding-top: 3rem;
-  border-top: 1px solid var(--border);
-}
-
-.price-label {
-  font-size: 1rem;
-  color: var(--text-muted);
-  font-weight: 600;
-  text-transform: lowercase;
-}
-
-.price-tag {
-  font-family: var(--font-serif);
-  font-size: 4rem;
-  color: var(--secondary);
-  font-weight: 700;
-}
-
+/* Register Button Styles */
 .register-button {
   width: 100%;
   padding: 1.75rem;
@@ -135,17 +180,39 @@
   box-shadow: var(--shadow-md);
 }
 
+.register-button.disabled {
+  background: var(--border);
+  color: var(--text-muted);
+  cursor: not-allowed;
+}
+
+.full-notice {
+  color: var(--danger);
+  font-size: 0.9rem;
+  margin-top: 1.5rem;
+  font-weight: 600;
+}
+
 @media (max-width: 992px) {
-  .event-info-container {
+  .event-header {
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .event-page-title {
+    font-size: 3.5rem;
+  }
+
+  .registration-action-card {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .details-boxes-grid {
     grid-template-columns: 1fr;
-    gap: 6rem;
   }
 
   .event-banner {
     height: 450px;
-  }
-
-  .event-main-content h1 {
-    font-size: 3.5rem;
   }
 }
