@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { getUser, clearAuth } from '../utils/auth';
 import '../styles/Navbar.css';
 
 const Navbar = () => {
@@ -10,21 +11,11 @@ const Navbar = () => {
 
   useEffect(() => {
     // Check for user in localStorage whenever the location changes
-    const storedUser = localStorage.getItem('eventhive_user');
-    if (storedUser) {
-      try {
-        setUser(JSON.parse(storedUser));
-      } catch (e) {
-        setUser(null);
-      }
-    } else {
-      setUser(null);
-    }
+    setUser(getUser());
   }, [location]);
 
   const handleLogout = () => {
-    localStorage.removeItem('eventhive_token');
-    localStorage.removeItem('eventhive_user');
+    clearAuth();
     setUser(null);
     setIsOpen(false);
     navigate('/login');
@@ -60,7 +51,7 @@ const Navbar = () => {
             {user ? (
               <>
                 <span className="navbar-user">Hi, {user.name}</span>
-                {user.role === 'organizer' && (
+                {user.role === 'organiser' && (
                   <Link to="/dashboard" className="navbar-link" onClick={closeMenu}>Dashboard</Link>
                 )}
                 <Link to="/my-tickets" className="navbar-link" onClick={closeMenu}>My Tickets</Link>
