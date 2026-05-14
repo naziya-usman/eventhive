@@ -33,7 +33,6 @@ export const getImageUrl = (path) => {
 
   const fullUrl = `${baseUrl}${finalPath}`;
   
-  console.log(`[getImageUrl] Original: ${path.substring(0, 50)}${path.length > 50 ? '...' : ''} -> Final: ${fullUrl}`);
   
   return fullUrl;
 };

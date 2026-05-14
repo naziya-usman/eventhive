@@ -5,7 +5,40 @@ const Event = require("../models/Event");
 // @access  Public
 exports.getEvents = async (req, res) => {
     try {
-        const events = await Event.find().sort({ date: 1 });
+        const { search, category, dateFrom, dateTo, free } = req.query;
+        let filter = {};
+
+        // Search by title, category, or location (case-insensitive regex)
+        if (search) {
+            filter.$or = [
+                { title: { $regex: search, $options: "i" } },
+                { category: { $regex: search, $options: "i" } },
+                { location: { $regex: search, $options: "i" } }
+            ];
+        }
+
+        // Filter by category
+        if (category) {
+            filter.category = category;
+        }
+
+        // Filter by date range
+        if (dateFrom || dateTo) {
+            filter.date = {};
+            if (dateFrom) {
+                filter.date.$gte = new Date(dateFrom);
+            }
+            if (dateTo) {
+                filter.date.$lte = new Date(dateTo);
+            }
+        }
+
+        // Filter for free events
+        if (free === "true") {
+            filter.price = 0;
+        }
+
+        const events = await Event.find(filter).sort({ date: 1 });
         res.status(200).json(events);
     } catch (error) {
         res.status(500).json({ message: "Server error", error: error.message });
