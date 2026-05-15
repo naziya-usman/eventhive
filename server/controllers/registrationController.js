@@ -2,6 +2,8 @@ const Event = require("../models/Event");
 const Registration = require("../models/Registration");
 const { v4: uuidv4 } = require("uuid");
 const QRCode = require("qrcode");
+const sendEmail = require("../utils/sendEmail");
+const { ticketConfirmationHTML } = require("../utils/emailTemplates");
 
 // @desc    Register for an event
 // @route   POST /api/registrations/:id
@@ -54,7 +56,45 @@ exports.registerForEvent = async (req, res) => {
         event.registeredCount += 1;
         await event.save();
 
-        // 9) Return the saved registration as JSON
+        // 9) Send confirmation email (Fire and Forget Pattern)
+        // We do this in a separate try-catch so email failure doesn't stop the registration response.
+        try {
+            // Populate attendee to get name and email
+            await registration.populate("attendee", "name email");
+            console.log(registration);
+            // Extract the base64 part of the QR code data URL (remove "data:image/png;base64,")
+            const qrCodeBase64 = qrCodeData.split(",")[1];
+
+            // Format date for the email
+            const formattedDate = new Date(event.date).toLocaleString("en-US", {
+                weekday: "long",
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+            });
+
+            const emailHTML = ticketConfirmationHTML(
+                registration.attendee.name,
+                event.title,
+                formattedDate,
+                event.location,
+                registration.ticketId,
+                qrCodeBase64
+            );
+
+            await sendEmail(
+                registration.attendee.email,
+                `Registration Confirmed: ${event.title}`,
+                emailHTML
+            );
+        } catch (emailError) {
+            // Log the error but continue — the user is already registered
+            console.error("Failed to send confirmation email:", emailError);
+        }
+
+        // 10) Return the saved registration as JSON
         res.status(201).json(registration);
     } catch (error) {
         res.status(500).json({ message: "Server error", error: error.message });

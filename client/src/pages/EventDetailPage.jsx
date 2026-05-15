@@ -45,7 +45,7 @@ const EventDetailPage = () => {
 
     try {
       setRegistering(true);
-      const response = await api.post(`/events/${id}/register`);
+      const response = await api.post(`/registrations/${id}`);
       toast.success(
         `Registered successfully! Ticket ID: ${response.data.ticketId}`,
       );

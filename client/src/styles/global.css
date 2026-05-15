@@ -73,3 +73,37 @@ button {
   margin: 0 auto;
   padding: 0 2rem;
 }
+
+/* Print Styles */
+@media print {
+  .no-print, 
+  nav, 
+  footer, 
+  .navbar,
+  .hide-on-print {
+    display: none !important;
+  }
+
+  body {
+    background-color: white !important;
+  }
+
+  .container {
+    width: 100% !important;
+    max-width: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .ticket-card {
+    box-shadow: none !important;
+    border: 1px solid #eee !important;
+    page-break-inside: avoid;
+  }
+
+  .to-print {
+    display: block !important;
+    margin: 0 auto !important;
+    width: 100% !important;
+  }
+}
