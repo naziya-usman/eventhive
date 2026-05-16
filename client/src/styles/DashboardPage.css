@@ -194,9 +194,10 @@
   margin-top: auto;
   display: flex;
   justify-content: flex-end;
+  gap: 0.5rem;
 }
 
-.btn-primary, .btn-danger, .btn-success {
+.btn-primary, .btn-danger, .btn-success, .btn-edit, .btn-secondary {
   padding: 0.75rem 1.5rem;
   border-radius: var(--radius-full);
   font-weight: 700;
@@ -207,6 +208,26 @@
 
 .btn-primary {
   background: var(--primary);
+  color: white;
+}
+
+.btn-secondary {
+  background: var(--bg-soft);
+  color: var(--text-main);
+  border: 1px solid var(--border);
+}
+
+.btn-secondary:hover {
+  background: var(--border);
+}
+
+.btn-edit {
+  background: #f1f5f9;
+  color: #334155;
+}
+
+.btn-edit:hover {
+  background: #334155;
   color: white;
 }
 

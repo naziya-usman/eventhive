@@ -4,3 +4,9 @@
   display: flex;
   flex-direction: column;
 }
+
+@media (max-width: 768px) {
+  .app-container {
+    padding-bottom: 7rem; /* Space for the floating bottom dock */
+  }
+}

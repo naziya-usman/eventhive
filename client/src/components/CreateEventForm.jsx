@@ -2,15 +2,17 @@ import { useState } from 'react';
 import api from '../utils/api';
 import '../styles/DashboardPage.css'; 
 
-const CreateEventForm = ({ onSuccess }) => {
+const CreateEventForm = ({ onSuccess, eventToEdit = null }) => {
+  const isEditing = !!eventToEdit;
+  
   const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    category: 'music',
-    date: '',
-    location: '',
-    capacity: 10,
-    price: 0,
+    title: eventToEdit?.title || '',
+    description: eventToEdit?.description || '',
+    category: eventToEdit?.category || 'music',
+    date: eventToEdit?.date ? new Date(eventToEdit.date).toISOString().slice(0, 16) : '',
+    location: eventToEdit?.location || '',
+    capacity: eventToEdit?.capacity || 10,
+    price: eventToEdit?.price || 0,
   });
   const [bannerImage, setBannerImage] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -42,10 +44,14 @@ const CreateEventForm = ({ onSuccess }) => {
     }
 
     try {
-      await api.post('/events', data);
+      if (isEditing) {
+        await api.put(`/events/${eventToEdit._id}`, data);
+      } else {
+        await api.post('/events', data);
+      }
       onSuccess();
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to create event. Please try again.');
+      setError(err.response?.data?.message || `Failed to ${isEditing ? 'update' : 'create'} event. Please try again.`);
     } finally {
       setLoading(false);
     }
@@ -54,7 +60,7 @@ const CreateEventForm = ({ onSuccess }) => {
   return (
     <div className="create-event-form-container">
       <form className="create-event-form" onSubmit={handleSubmit}>
-        <h2>Create New Event</h2>
+        <h2>{isEditing ? 'Update Event' : 'Create New Event'}</h2>
         
         {error && <p className="error-message">{error}</p>}
 
@@ -142,7 +148,7 @@ const CreateEventForm = ({ onSuccess }) => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="bannerImage">Banner Image</label>
+            <label htmlFor="bannerImage">Banner Image {isEditing && '(Optional)'}</label>
             <input
               type="file"
               id="bannerImage"
@@ -167,7 +173,7 @@ const CreateEventForm = ({ onSuccess }) => {
         </div>
 
         <button type="submit" className="btn-success" disabled={loading}>
-          {loading ? 'Publishing...' : 'Publish Event'}
+          {loading ? 'Saving...' : isEditing ? 'Update Event' : 'Publish Event'}
         </button>
       </form>
     </div>

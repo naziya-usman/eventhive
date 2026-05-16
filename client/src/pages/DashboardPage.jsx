@@ -6,10 +6,12 @@ import { getImageUrl } from "../utils/getImageUrl";
 import CreateEventForm from "../components/CreateEventForm";
 import "../styles/DashboardPage.css"; 
 
-const DashboardPage = () => {  const [events, setEvents] = useState([]);
+const DashboardPage = () => {
+  const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [showCreateForm, setShowCreateForm] = useState(false);
+  const [editingEvent, setEditingEvent] = useState(null);
   const user = getUser();
 
   const fetchEvents = async () => {
@@ -44,6 +46,23 @@ const DashboardPage = () => {  const [events, setEvents] = useState([]);
     }
   };
 
+  const handleEdit = (event) => {
+    setEditingEvent(event);
+    setShowCreateForm(true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleFormSuccess = () => {
+    setShowCreateForm(false);
+    setEditingEvent(null);
+    fetchEvents();
+  };
+
+  const handleCancel = () => {
+    setShowCreateForm(false);
+    setEditingEvent(null);
+  };
+
   if (loading && events.length === 0)
     return <div className="loading">Loading dashboard...</div>;
 
@@ -52,8 +71,8 @@ const DashboardPage = () => {  const [events, setEvents] = useState([]);
       <div className="dashboard-header">
         <h1>Organizer Dashboard</h1>
         <button
-          className="btn-primary"
-          onClick={() => setShowCreateForm(!showCreateForm)}
+          className={showCreateForm ? "btn-secondary" : "btn-primary"}
+          onClick={showCreateForm ? handleCancel : () => setShowCreateForm(true)}
         >
           {showCreateForm ? "Cancel" : "Create New Event"}
         </button>
@@ -62,10 +81,8 @@ const DashboardPage = () => {  const [events, setEvents] = useState([]);
       {showCreateForm && (
         <div className="create-event-section">
           <CreateEventForm
-            onSuccess={() => {
-              setShowCreateForm(false);
-              fetchEvents();
-            }}
+            onSuccess={handleFormSuccess}
+            eventToEdit={editingEvent}
           />
         </div>
       )}
@@ -88,10 +105,16 @@ const DashboardPage = () => {  const [events, setEvents] = useState([]);
                 <div className="registration-status">
                   <span className="status-label">Registrations:</span>
                   <span className="status-count">
-                    {event.registrations?.length || 0} / {event.capacity}
+                    {event.registeredCount || 0} / {event.capacity}
                   </span>
                 </div>
                 <div className="card-actions">
+                  <button
+                    className="btn-edit"
+                    onClick={() => handleEdit(event)}
+                  >
+                    Edit
+                  </button>
                   <button
                     className="btn-danger"
                     onClick={() => handleDelete(event._id)}
