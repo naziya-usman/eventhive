@@ -3,10 +3,12 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  padding-top: 5rem; /* Space for the floating navbar */
 }
 
 @media (max-width: 768px) {
   .app-container {
-    padding-bottom: 7rem; /* Space for the floating bottom dock */
+    padding-top: 0; /* No top navbar on mobile */
+    padding-bottom: 5rem; /* Space for the bottom navbar */
   }
 }

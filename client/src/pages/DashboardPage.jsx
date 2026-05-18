@@ -66,70 +66,121 @@ const DashboardPage = () => {
   if (loading && events.length === 0)
     return <div className="loading">Loading dashboard...</div>;
 
+  const totalTickets = events.reduce((acc, curr) => acc + (curr.registeredCount || 0), 0);
+  const totalCapacity = events.reduce((acc, curr) => acc + curr.capacity, 0);
+
   return (
-    <div className="dashboard-page">
-      <div className="dashboard-header">
-        <h1>Organizer Dashboard</h1>
-        <button
-          className={showCreateForm ? "btn-secondary" : "btn-primary"}
-          onClick={showCreateForm ? handleCancel : () => setShowCreateForm(true)}
-        >
-          {showCreateForm ? "Cancel" : "Create New Event"}
-        </button>
-      </div>
+    <div className="saas-dashboard">
+      <div className="saas-container">
+        <header className="saas-header">
+          <div className="header-text">
+            <h1>Management <span className="text-dim">/ Overview</span></h1>
+            <p>Monitor your events performance and manage attendee registrations.</p>
+          </div>
+          <button className="saas-btn-primary" onClick={() => setShowCreateForm(true)}>
+            <span className="plus">+</span> New Event
+          </button>
+        </header>
 
-      {showCreateForm && (
-        <div className="create-event-section">
-          <CreateEventForm
-            onSuccess={handleFormSuccess}
-            eventToEdit={editingEvent}
-          />
-        </div>
-      )}
+        {/* Stats Strip */}
+        <section className="saas-stats-strip">
+          <div className="stat-item">
+            <span className="stat-label">Total Events</span>
+            <span className="stat-value">{events.length}</span>
+          </div>
+          <div className="stat-item">
+            <span className="stat-label">Total Tickets Sold</span>
+            <span className="stat-value">{totalTickets}</span>
+          </div>
+          <div className="stat-item">
+            <span className="stat-label">Avg. Fill Rate</span>
+            <span className="stat-value">
+              {totalCapacity > 0 ? Math.round((totalTickets / totalCapacity) * 100) : 0}%
+            </span>
+          </div>
+        </section>
 
-      {error && <p className="error-text">{error}</p>}
-
-      <div className="events-grid">
-        {events.length > 0 ? (
-          events.map((event) => (
-            <div key={event._id} className="event-dashboard-card">
-              {event.bannerImage && (
-                <div 
-                  className="card-bg-blur" 
-                  style={{ backgroundImage: `url(${getImageUrl(event.bannerImage)})` }}
-                ></div>
-              )}
-              <div className="card-content">
-                <h3>{event.title}</h3>
-                <p className="event-date">{formatDate(event.date)}</p>
-                <div className="registration-status">
-                  <span className="status-label">Registrations:</span>
-                  <span className="status-count">
-                    {event.registeredCount || 0} / {event.capacity}
-                  </span>
-                </div>
-                <div className="card-actions">
-                  <button
-                    className="btn-edit"
-                    onClick={() => handleEdit(event)}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    className="btn-danger"
-                    onClick={() => handleDelete(event._id)}
-                  >
-                    Delete
-                  </button>
-                </div>
+        {showCreateForm && (
+          <div className="saas-modal-overlay">
+            <div className="saas-slide-panel">
+              <div className="panel-header">
+                <h2>{editingEvent ? "Edit Event" : "Create Event"}</h2>
+                <button className="panel-close" onClick={handleCancel}>✕</button>
+              </div>
+              <div className="panel-body">
+                <CreateEventForm
+                  onSuccess={handleFormSuccess}
+                  eventToEdit={editingEvent}
+                />
               </div>
             </div>
-          ))
-        ) : (
-          <div className="empty-state">
-            <p>No events yet. Start by creating your first event!</p>
           </div>
         )}
+
+        <main className="saas-main-list">
+          <div className="list-header">
+            <div className="col-event">Event Details</div>
+            <div className="col-status">Registration Status</div>
+            <div className="col-actions">Actions</div>
+          </div>
+
+          <div className="list-body">
+            {events.length > 0 ? (
+              events.map((event) => (
+                <div key={event._id} className="saas-list-row">
+                  <div className="col-event">
+                    <div className="row-event-info">
+                      <div className="row-img-thumb">
+                        <img 
+                          src={event.bannerImage ? getImageUrl(event.bannerImage) : "https://via.placeholder.com/100"} 
+                          alt="" 
+                        />
+                      </div>
+                      <div className="row-text-details">
+                        <h3 className="row-title">{event.title}</h3>
+                        <p className="row-meta">
+                          <span className="row-cat">{event.category}</span>
+                          <span className="divider">|</span>
+                          <span className="row-date">{formatDate(event.date, "short")}</span>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="col-status">
+                    <div className="status-progress-wrapper">
+                      <div className="progress-labels">
+                        <span>{event.registeredCount || 0} / {event.capacity}</span>
+                        <span>{Math.round(((event.registeredCount || 0) / event.capacity) * 100)}%</span>
+                      </div>
+                      <div className="progress-bar-bg">
+                        <div 
+                          className="progress-bar-fill" 
+                          style={{ width: `${((event.registeredCount || 0) / event.capacity) * 100}%` }}
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="col-actions">
+                    <div className="action-buttons-group">
+                      <button className="action-btn edit" onClick={() => handleEdit(event)}>
+                        Edit
+                      </button>
+                      <button className="action-btn delete" onClick={() => handleDelete(event._id)}>
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="saas-empty-state">
+                <p>No active events found. Create one to get started.</p>
+              </div>
+            )}
+          </div>
+        </main>
       </div>
     </div>
   );

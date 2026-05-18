@@ -1,16 +1,16 @@
 :root {
   /* Colors - Midnight Plum & Silver (Aesthetic High Contrast) */
-  --primary: #240046;         /* Midnight Purple */
+  --primary: #240046; /* Midnight Purple */
   --primary-dark: #10002b;
-  --secondary: #7b2cbf;       /* Deep Lavender */
+  --secondary: #7b2cbf; /* Deep Lavender */
   --secondary-light: #e0aaff; /* Pale Lavender */
-  --bg-main: #d8dbe2;         /* Mist Gray - High Contrast background */
+  --bg-main: #d8dbe2; /* Mist Gray - High Contrast background */
   --bg-card: #ffffff;
-  --text-main: #10002b;       /* Deepest Purple/Black */
-  --text-muted: #3c096c;      /* Muted Purple */
+  --text-main: #10002b; /* Deepest Purple/Black */
+  --text-muted: #3c096c; /* Muted Purple */
   --border: #bcbed8;
   --white: #ffffff;
-  --danger: #9d4edd;          /* Bright Lavender for "danger/urgent" to stay in theme */
+  --danger: #9d4edd; /* Bright Lavender for "danger/urgent" to stay in theme */
 
   /* Soft Shadows */
   --shadow-sm: 0 2px 4px rgba(36, 0, 70, 0.05);
@@ -24,8 +24,8 @@
   --radius-full: 9999px;
 
   /* Fonts */
-  --font-serif: 'Georgia', serif;
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-serif: "Georgia", serif;
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
 }
 
 /* Base Styles */
@@ -37,13 +37,15 @@
 
 body {
   font-family: var(--font-sans);
-  background-color: var(--bg-main);
   color: var(--text-main);
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
 }
 
-h1, h2, h3, h4 {
+h1,
+h2,
+h3,
+h4 {
   font-family: var(--font-serif);
   font-weight: 700;
   color: var(--text-main);
@@ -51,10 +53,18 @@ h1, h2, h3, h4 {
   line-height: 1.2;
 }
 
-h1 { font-size: 2.5rem; }
-h2 { font-size: 2rem; }
-h3 { font-size: 1.5rem; }
-h4 { font-size: 1.25rem; }
+h1 {
+  font-size: 2.5rem;
+}
+h2 {
+  font-size: 2rem;
+}
+h3 {
+  font-size: 1.5rem;
+}
+h4 {
+  font-size: 1.25rem;
+}
 
 a {
   text-decoration: none;
@@ -80,10 +90,16 @@ button {
     padding: 0 1.25rem;
   }
 
-  h1 { font-size: 2rem; }
-  h2 { font-size: 1.75rem; }
-  h3 { font-size: 1.35rem; }
-  
+  h1 {
+    font-size: 2rem;
+  }
+  h2 {
+    font-size: 1.75rem;
+  }
+  h3 {
+    font-size: 1.35rem;
+  }
+
   .hide-on-mobile {
     display: none !important;
   }
@@ -103,9 +119,9 @@ button {
 
 /* Print Styles */
 @media print {
-  .no-print, 
-  nav, 
-  footer, 
+  .no-print,
+  nav,
+  footer,
   .navbar,
   .hide-on-print {
     display: none !important;

@@ -60,8 +60,6 @@ const CreateEventForm = ({ onSuccess, eventToEdit = null }) => {
   return (
     <div className="create-event-form-container">
       <form className="create-event-form" onSubmit={handleSubmit}>
-        <h2>{isEditing ? 'Update Event' : 'Create New Event'}</h2>
-        
         {error && <p className="error-message">{error}</p>}
 
         <div className="form-grid">
@@ -172,8 +170,8 @@ const CreateEventForm = ({ onSuccess, eventToEdit = null }) => {
           ></textarea>
         </div>
 
-        <button type="submit" className="btn-success" disabled={loading}>
-          {loading ? 'Saving...' : isEditing ? 'Update Event' : 'Publish Event'}
+        <button type="submit" className="aesthetic-submit-btn" disabled={loading}>
+          {loading ? 'Crafting...' : isEditing ? 'Refine Event' : 'Publish Your Vibe'}
         </button>
       </form>
     </div>

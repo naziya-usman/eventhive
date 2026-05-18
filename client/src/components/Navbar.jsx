@@ -4,7 +4,14 @@ import { getUser, clearAuth } from "../utils/auth";
 import "../styles/Navbar.css";
 
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const [side, setSide] = useState("bottom"); // top, bottom, left, right
+  const [vAlign, setVAlign] = useState("bottom"); // top or bottom half
+  const [hAlign, setHAlign] = useState("right"); // left or right half
+  const [fabStyle, setFabStyle] = useState({ bottom: "2rem", right: "2rem" });
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragPos, setDragPos] = useState(null);
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
@@ -17,31 +24,127 @@ const Navbar = () => {
   const handleLogout = () => {
     clearAuth();
     setUser(null);
-    setIsOpen(false);
+    setIsMenuOpen(false);
+    setIsSheetOpen(false);
     navigate("/login");
   };
 
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
+  const toggleMenu = (e) => {
+    if (isDragging) return;
+    setIsMenuOpen(!isMenuOpen);
   };
 
-  const closeMenu = () => {
-    setIsOpen(false);
+  const openSheet = () => {
+    setIsSheetOpen(true);
+    setIsMenuOpen(false);
+  };
+
+  const closeAll = () => {
+    setIsMenuOpen(false);
+    setIsSheetOpen(false);
+  };
+
+  // Drag handlers for the FAB
+  const handlePointerDown = (e) => {
+    if (isMenuOpen) return;
+    setIsDragging(false);
+    setDragPos({ x: e.clientX, y: e.clientY });
+  };
+
+  const handlePointerMove = (e) => {
+    if (!dragPos) return;
+    const dist = Math.hypot(e.clientX - dragPos.x, e.clientY - dragPos.y);
+    if (dist > 10) {
+      setIsDragging(true);
+      setFabStyle({
+        top: `${e.clientY - 30}px`,
+        left: `${e.clientX - 30}px`,
+        bottom: "auto",
+        right: "auto",
+      });
+    }
+  };
+
+  const handlePointerUp = (e) => {
+    if (isDragging) {
+      const x = e.clientX;
+      const y = e.clientY;
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+
+      const dL = x;
+      const dR = w - x;
+      const dT = y;
+      const dB = h - y;
+
+      const min = Math.min(dL, dR, dT, dB);
+      const padding = 20;
+
+      const currentVAlign = y < h / 2 ? "top" : "bottom";
+      const currentHAlign = x < w / 2 ? "left" : "right";
+      setVAlign(currentVAlign);
+      setHAlign(currentHAlign);
+
+      if (min === dL) {
+        setSide("left");
+        setFabStyle({
+          left: `${padding}px`,
+          top: `${Math.max(padding, Math.min(h - 80, y - 30))}px`,
+          bottom: "auto",
+          right: "auto",
+        });
+      } else if (min === dR) {
+        setSide("right");
+        setFabStyle({
+          right: `${padding}px`,
+          top: `${Math.max(padding, Math.min(h - 80, y - 30))}px`,
+          bottom: "auto",
+          left: "auto",
+        });
+      } else if (min === dT) {
+        setSide("top");
+        setFabStyle({
+          top: `${padding}px`,
+          left: `${Math.max(padding, Math.min(w - 80, x - 30))}px`,
+          bottom: "auto",
+          right: "auto",
+        });
+      } else {
+        setSide("bottom");
+        setFabStyle({
+          bottom: `${padding}px`,
+          left: `${Math.max(padding, Math.min(w - 80, x - 30))}px`,
+          top: "auto",
+          right: "auto",
+        });
+      }
+    }
+    setDragPos(null);
+    setTimeout(() => setIsDragging(false), 50);
   };
 
   return (
     <nav className="navbar">
       <div
-        className={`navbar-overlay ${isOpen ? "active" : ""}`}
-        onClick={closeMenu}
+        className={`navbar-overlay ${isSheetOpen || isMenuOpen ? "active" : ""}`}
+        onClick={closeAll}
       ></div>
 
-      {/* Top Navbar - Always visible on Desktop, Logo only on Mobile */}
+      {/* Top Navbar */}
       <div className="navbar-container">
-        <Link to="/" className="navbar-logo" onClick={closeMenu}>
+        <Link to="/" className="navbar-logo" onClick={closeAll}>
           <img src="/logo.png" alt="EventHive Logo" className="logo-img" />
           <span>EventHive</span>
         </Link>
+
+        {/* Mobile Hamburger - Visible only on Mobile */}
+        <button
+          className="mobile-menu-toggle"
+          onClick={toggleMenu}
+          aria-label="Toggle menu"
+        >
+          <div className={`hamburger-bar ${isMenuOpen ? "active" : ""}`}></div>
+        </button>
 
         {/* Desktop Menu */}
         <div className="navbar-desktop-menu">
@@ -49,7 +152,10 @@ const Navbar = () => {
             <Link to="/" className="navbar-link">
               Home
             </Link>
-            <Link to="/events" className={`navbar-link ${location.pathname === '/events' ? 'active' : ''}`}>
+            <Link
+              to="/events"
+              className={`navbar-link ${location.pathname === "/events" ? "active" : ""}`}
+            >
               Events
             </Link>
           </div>
@@ -57,14 +163,27 @@ const Navbar = () => {
           <div className="navbar-right">
             {user ? (
               <>
-                <span className="navbar-user">Hi, {user.name}</span>
+                <div className="navbar-user-chip">
+                  <div className="navbar-user-avatar">
+                    {user.name.charAt(0)}
+                  </div>
+                  <span className="navbar-user-name">
+                    hi, {user.name.split(" ")[0]}
+                  </span>
+                </div>
                 {user.role === "organiser" && (
-                  <Link to="/dashboard" className="navbar-link">
+                  <Link
+                    to="/dashboard"
+                    className={`navbar-link ${location.pathname === "/dashboard" ? "active" : ""}`}
+                  >
                     Dashboard
                   </Link>
                 )}
-                <Link to="/my-tickets" className="navbar-link">
-                  My Tickets
+                <Link
+                  to="/my-tickets"
+                  className={`navbar-link ${location.pathname === "/my-tickets" ? "active" : ""}`}
+                >
+                  Tickets
                 </Link>
                 <button
                   className="navbar-btn logout-btn"
@@ -87,90 +206,48 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Floating Bottom Dock - Mobile Only */}
-      <div className="mobile-bottom-dock">
-        <Link
-          to="/"
-          className={`dock-item ${location.pathname === "/" ? "active" : ""}`}
-          onClick={closeMenu}
-        >
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-          >
-            <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-          </svg>
-          <span>Home</span>
+      {/* Centered FAB Menu Items - Mobile Only */}
+      <div className={`fab-menu-centered ${isMenuOpen ? "active" : ""}`}>
+        <Link to="/" className="fab-item-center" onClick={closeAll}>
+          <div className="fab-icon-center">🏠</div>
+          <span className="fab-label-center">Home</span>
         </Link>
-        <Link
-          to="/events"
-          className={`dock-item ${location.pathname === "/events" ? "active" : ""}`}
-          onClick={closeMenu}
-        >
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-          >
-            <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
-          <span>Events</span>
+        <Link to="/events" className="fab-item-center" onClick={closeAll}>
+          <div className="fab-icon-center">✨</div>
+          <span className="fab-label-center">Discover</span>
         </Link>
-        {user && user.role === "organiser" ? (
-          <Link
-            to="/dashboard"
-            className={`dock-item ${location.pathname === "/dashboard" ? "active" : ""}`}
-            onClick={closeMenu}
-          >
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <path d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
-            </svg>
-            <span>Admin</span>
-          </Link>
-        ) : (
-          <Link
-            to="/my-tickets"
-            className={`dock-item ${location.pathname === "/my-tickets" ? "active" : ""}`}
-            onClick={closeMenu}
-          >
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <path d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
-            </svg>
-            <span>Tickets</span>
-          </Link>
-        )}
-        <button
-          className={`dock-item ${isOpen ? "active" : ""}`}
-          onClick={toggleMenu}
-        >
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-          >
-            <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-          </svg>
-          <span>{user ? "Profile" : "Login"}</span>
+        <Link to="/my-tickets" className="fab-item-center" onClick={closeAll}>
+          <div className="fab-icon-center">🎟️</div>
+          <span className="fab-label-center">Tickets</span>
+        </Link>
+        <button className="fab-item-center" onClick={openSheet}>
+          <div className="fab-icon-center">
+            {user ? user.name.charAt(0) : "👤"}
+          </div>
+          <span className="fab-label-center">Profile</span>
         </button>
       </div>
 
-      {/* Bottom Sheet Menu - Mobile Only */}
-      <div className={`bottom-sheet ${isOpen ? "active" : ""}`}>
-        <div className="sheet-handle" onClick={closeMenu}></div>
+      {/* Floating Action Button - Mobile Only */}
+      <div
+        className={`mobile-fab-container side-${side} ${isMenuOpen ? "active" : ""} ${isDragging ? "dragging" : ""}`}
+        style={fabStyle}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+      >
+        <button
+          className={`fab-main-btn ${isMenuOpen ? "active" : ""}`}
+          onClick={toggleMenu}
+          aria-label="Menu"
+        >
+          <div className="fab-burger"></div>
+        </button>
+      </div>
+
+      {/* Bottom Sheet Menu - Full Navigation Mobile */}
+      <div className={`bottom-sheet ${isSheetOpen ? "active" : ""}`}>
+        <div className="sheet-handle" onClick={closeAll}></div>
         <div className="sheet-content">
           {user ? (
             <div className="sheet-user-info">
@@ -183,54 +260,48 @@ const Navbar = () => {
             </div>
           ) : (
             <div className="sheet-header">
-              <h3>Welcome to EventHive</h3>
-              <p>Sign in to manage your events and tickets</p>
+              <h3>EventHive</h3>
+              <p>Sign in to unlock full access</p>
             </div>
           )}
 
           <div className="sheet-links">
             {user ? (
               <>
-                <Link
-                  to="/my-tickets"
-                  className="sheet-link"
-                  onClick={closeMenu}
-                >
-                  My Tickets
-                </Link>
                 {user.role === "organiser" && (
                   <Link
                     to="/dashboard"
                     className="sheet-link"
-                    onClick={closeMenu}
+                    onClick={closeAll}
                   >
-                    Organiser Dashboard
+                    <span className="icon">📊</span> Organiser Dashboard
                   </Link>
                 )}
+                <div className="sheet-divider"></div>
                 <button
                   className="sheet-link logout-link"
                   onClick={handleLogout}
                 >
-                  Logout
+                  <span className="icon">🚪</span> Logout
                 </button>
               </>
             ) : (
-              <>
+              <div className="sheet-auth-grid">
                 <Link
                   to="/login"
                   className="sheet-btn login-btn"
-                  onClick={closeMenu}
+                  onClick={closeAll}
                 >
                   Login
                 </Link>
                 <Link
                   to="/register"
                   className="sheet-btn register-btn"
-                  onClick={closeMenu}
+                  onClick={closeAll}
                 >
-                  Create Account
+                  Join Now
                 </Link>
-              </>
+              </div>
             )}
           </div>
         </div>
