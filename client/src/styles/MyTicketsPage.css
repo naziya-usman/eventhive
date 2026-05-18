@@ -1,11 +1,11 @@
 .my-tickets-page {
-  padding-top: 2rem;
-  padding-bottom: 4rem;
+  padding: 2rem 1rem 8rem;
 }
 
 .my-tickets-page h1 {
   margin-bottom: 2rem;
   text-align: center;
+  font-size: 2rem;
 }
 
 .tickets-grid {
@@ -18,7 +18,7 @@
 
 .ticket-card {
   background: var(--bg-card);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: var(--shadow-md);
   display: flex;
@@ -27,7 +27,7 @@
 }
 
 .ticket-banner {
-  height: 200px;
+  height: 180px;
   width: 100%;
 }
 
@@ -38,47 +38,59 @@
 }
 
 .ticket-content {
-  padding: 2rem;
+  padding: 1.5rem;
   display: flex;
   justify-content: space-between;
-  gap: 2rem;
+  gap: 1.5rem;
+}
+
+.ticket-main-info {
+  flex: 1;
 }
 
 .ticket-main-info h2 {
   margin-bottom: 0.5rem;
   color: var(--primary);
+  font-size: 1.5rem;
 }
 
 .event-date {
-  font-weight: 600;
+  font-weight: 700;
   color: var(--secondary);
   margin-bottom: 0.25rem;
+  font-size: 0.9rem;
 }
 
 .event-location {
   color: var(--text-muted);
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
 }
 
 .ticket-id-section {
   display: flex;
   flex-direction: column;
+  margin-top: 1rem;
 }
 
 .ticket-id-section .label {
-  font-size: 0.75rem;
-  font-weight: 700;
+  font-size: 0.7rem;
+  font-weight: 800;
   color: var(--text-muted);
   letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 0.3rem;
 }
 
 .ticket-id {
   font-family: 'Courier New', Courier, monospace;
-  font-size: 1.1rem;
-  background: #f1f5f9;
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
+  font-size: 1rem;
+  background: var(--bg-main);
+  padding: 0.4rem 0.8rem;
+  border-radius: var(--radius-sm);
   color: var(--primary);
+  display: inline-block;
+  border: 1px solid var(--border);
 }
 
 .ticket-qr-section {
@@ -88,38 +100,47 @@
   justify-content: center;
   text-align: center;
   border-left: 2px dashed var(--border);
-  padding-left: 2rem;
+  padding-left: 1.5rem;
+  flex-shrink: 0;
 }
 
 .qr-code {
   margin-bottom: 0.5rem;
+  width: 100px;
+  height: 100px;
 }
 
 .qr-hint {
-  font-size: 0.75rem;
+  font-size: 0.65rem;
   color: var(--text-muted);
   text-transform: uppercase;
+  font-weight: 700;
 }
 
 .ticket-footer {
-  padding: 1rem 2rem;
-  background: #f8fafc;
+  padding: 1rem 1.5rem;
+  background: var(--bg-main);
   border-top: 1px solid var(--border);
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .print-btn {
   background: var(--primary);
   color: white;
   border: none;
-  padding: 0.6rem 1.2rem;
-  border-radius: var(--radius-sm);
-  font-weight: 600;
+  padding: 0.7rem 1.5rem;
+  border-radius: var(--radius-full);
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
 }
 
 .print-btn:hover {
-  background: var(--primary-dark);
+  background: var(--secondary);
+  transform: translateY(-2px);
 }
 
 .empty-state {
@@ -127,20 +148,38 @@
   font-size: 1.2rem;
   color: var(--text-muted);
   margin-top: 4rem;
+  background: white;
+  padding: 4rem 2rem;
+  border-radius: var(--radius-lg);
+  border: 2px dashed var(--border);
 }
 
 @media (max-width: 600px) {
   .ticket-content {
     flex-direction: column;
-    align-items: center;
-    text-align: center;
+    align-items: flex-start;
+    gap: 2rem;
   }
   
   .ticket-qr-section {
     border-left: none;
     border-top: 2px dashed var(--border);
     padding-left: 0;
-    padding-top: 2rem;
+    padding-top: 1.5rem;
+    width: 100%;
+    align-items: center;
+  }
+
+  .ticket-main-info h2 {
+    font-size: 1.3rem;
+  }
+
+  .ticket-footer {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .print-btn {
     width: 100%;
   }
 }

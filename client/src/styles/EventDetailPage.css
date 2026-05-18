@@ -194,25 +194,64 @@
 }
 
 @media (max-width: 992px) {
+  .event-detail-page {
+    padding: 2rem 1rem 8rem;
+  }
+
   .event-header {
     flex-direction: column;
     gap: 3rem;
+    margin-bottom: 4rem;
   }
 
   .event-page-title {
-    font-size: 3.5rem;
+    font-size: 2.5rem;
   }
 
   .registration-action-card {
     width: 100%;
     min-width: unset;
+    padding: 2rem 1.5rem;
+  }
+
+  .price-tag {
+    font-size: 2.5rem;
   }
 
   .details-boxes-grid {
     grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
 
   .event-banner {
-    height: 450px;
+    height: 300px;
+    margin-bottom: 3rem;
+  }
+
+  .event-category-badge {
+    top: 1rem;
+    left: 1rem;
+    padding: 0.5rem 1.2rem;
+    font-size: 0.8rem;
+  }
+
+  .detail-box {
+    padding: 1.5rem;
+    gap: 1.2rem;
+  }
+
+  .info-icon {
+    width: 3.5rem;
+    height: 3.5rem;
+    font-size: 1.8rem;
+  }
+
+  .info-value {
+    font-size: 1.1rem;
+  }
+
+  .register-button {
+    padding: 1.2rem;
+    font-size: 1.1rem;
   }
 }

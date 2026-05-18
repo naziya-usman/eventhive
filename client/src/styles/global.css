@@ -74,6 +74,33 @@ button {
   padding: 0 2rem;
 }
 
+/* Responsive Helpers */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1.25rem;
+  }
+
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.75rem; }
+  h3 { font-size: 1.35rem; }
+  
+  .hide-on-mobile {
+    display: none !important;
+  }
+
+  .mobile-only {
+    display: block !important;
+  }
+
+  .hide-on-tablet {
+    display: none !important;
+  }
+}
+
+.mobile-only {
+  display: none;
+}
+
 /* Print Styles */
 @media print {
   .no-print, 
