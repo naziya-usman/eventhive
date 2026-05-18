@@ -84,19 +84,28 @@ const DashboardPage = () => {
 
         {/* Stats Strip */}
         <section className="saas-stats-strip">
-          <div className="stat-item">
-            <span className="stat-label">Total Events</span>
-            <span className="stat-value">{events.length}</span>
+          <div className="stat-item stat-events">
+            <div className="stat-icon">📅</div>
+            <div className="stat-content">
+              <span className="stat-label">Events</span>
+              <span className="stat-value">{events.length}</span>
+            </div>
           </div>
-          <div className="stat-item">
-            <span className="stat-label">Total Tickets Sold</span>
-            <span className="stat-value">{totalTickets}</span>
+          <div className="stat-item stat-tickets">
+            <div className="stat-icon">🎟️</div>
+            <div className="stat-content">
+              <span className="stat-label">Sold</span>
+              <span className="stat-value">{totalTickets}</span>
+            </div>
           </div>
-          <div className="stat-item">
-            <span className="stat-label">Avg. Fill Rate</span>
-            <span className="stat-value">
-              {totalCapacity > 0 ? Math.round((totalTickets / totalCapacity) * 100) : 0}%
-            </span>
+          <div className="stat-item stat-rate">
+            <div className="stat-icon">📈</div>
+            <div className="stat-content">
+              <span className="stat-label">Fill Rate</span>
+              <span className="stat-value">
+                {totalCapacity > 0 ? Math.round((totalTickets / totalCapacity) * 100) : 0}%
+              </span>
+            </div>
           </div>
         </section>
 
