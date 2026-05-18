@@ -123,12 +123,25 @@ const Navbar = () => {
     setTimeout(() => setIsDragging(false), 50);
   };
 
+  const handleBack = () => {
+    navigate(-1);
+  };
+
   return (
     <nav className="navbar">
       <div
         className={`navbar-overlay ${isSheetOpen || isMenuOpen ? "active" : ""}`}
         onClick={closeAll}
       ></div>
+
+      {/* Back Button - Visible on all pages except Home */}
+      {location.pathname !== "/" && (
+        <button className="global-back-btn" onClick={handleBack} aria-label="Go back">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+            <path d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+      )}
 
       {/* Top Navbar */}
       <div className="navbar-container">

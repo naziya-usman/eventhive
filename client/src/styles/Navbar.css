@@ -1,3 +1,33 @@
+.global-back-btn {
+  position: fixed;
+  top: 5rem;
+  left: 0rem;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: white;
+  border: 1px solid rgba(0,0,0,0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 5500;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+  color: #111;
+}
+
+.global-back-btn:hover {
+  transform: translateX(-3px);
+  background: #f8f9fa;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+}
+
+.global-back-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
 /* Navbar Base Styling (Desktop/Universal) */
 .navbar {
   position: fixed;
@@ -130,12 +160,22 @@
 }
 
 /* Hidden by default on Desktop */
-.mobile-fab-container, .bottom-sheet, .navbar-overlay {
+.mobile-fab-container, 
+.fab-menu-centered, 
+.bottom-sheet, 
+.navbar-overlay {
   display: none;
 }
 
 /* Mobile Media Queries - Premium Pinterestic Experience */
 @media (max-width: 768px) {
+  .global-back-btn {
+    top: 1.25rem;
+    left: 1.25rem;
+    width: 40px;
+    height: 40px;
+  }
+
   .navbar {
     /* Reset desktop navbar styles on mobile */
     position: static;
