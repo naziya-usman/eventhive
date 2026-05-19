@@ -8,6 +8,7 @@ import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
 import MyTicketsPage from './pages/MyTicketsPage';
 import Navbar from './components/Navbar';
+import AnimatedThemeToggler from './components/AnimatedThemeToggler';
 import './styles/App.css';
 
 // ProtectedRoute component
@@ -27,6 +28,7 @@ function App() {
       <div className="app-container">
         <Toaster position="top-center" reverseOrder={false} />
         <Navbar />
+        <AnimatedThemeToggler />
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<HomePage />} />
