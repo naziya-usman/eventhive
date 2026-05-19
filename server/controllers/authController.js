@@ -1,6 +1,7 @@
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { handleControllerError, sendServerError } = require('../utils/errorResponses');
 
 // @desc    Register a new user
 // @route   POST /api/auth/register
@@ -12,7 +13,10 @@ exports.register = async (req, res) => {
     // Check if user exists
     let user = await User.findOne({ email });
     if (user) {
-      return res.status(400).json({ message: 'User already exists' });
+      return res.status(409).json({
+        message: 'An account with this email already exists. Please log in instead.',
+        field: 'email',
+      });
     }
 
     // Hash password
@@ -44,7 +48,7 @@ exports.register = async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(500).json({ message: 'Server error', error: error.message });
+    handleControllerError(res, error);
   }
 };
 
@@ -58,13 +62,13 @@ exports.login = async (req, res) => {
     // Check for user
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(401).json({ message: 'Invalid credentials' });
+      return res.status(401).json({ message: 'No account was found for this email address.' });
     }
 
     // Check password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(401).json({ message: 'Invalid credentials' });
+      return res.status(401).json({ message: 'Wrong password. Please try again.' });
     }
 
     // Create JWT
@@ -84,6 +88,6 @@ exports.login = async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(500).json({ message: 'Server error', error: error.message });
+    sendServerError(res);
   }
 };

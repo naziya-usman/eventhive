@@ -7,8 +7,6 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [side, setSide] = useState("bottom"); // top, bottom, left, right
-  const [vAlign, setVAlign] = useState("bottom"); // top or bottom half
-  const [hAlign, setHAlign] = useState("right"); // left or right half
   const [fabStyle, setFabStyle] = useState({ bottom: "2rem", right: "2rem" });
   const [isDragging, setIsDragging] = useState(false);
   const [dragPos, setDragPos] = useState(null);
@@ -29,7 +27,7 @@ const Navbar = () => {
     navigate("/login");
   };
 
-  const toggleMenu = (e) => {
+  const toggleMenu = () => {
     if (isDragging) return;
     setIsMenuOpen(!isMenuOpen);
   };
@@ -79,11 +77,6 @@ const Navbar = () => {
 
       const min = Math.min(dL, dR, dT, dB);
       const padding = 20;
-
-      const currentVAlign = y < h / 2 ? "top" : "bottom";
-      const currentHAlign = x < w / 2 ? "left" : "right";
-      setVAlign(currentVAlign);
-      setHAlign(currentHAlign);
 
       if (min === dL) {
         setSide("left");
@@ -146,7 +139,7 @@ const Navbar = () => {
       {/* Top Navbar */}
       <div className="navbar-container">
         <Link to="/" className="navbar-logo" onClick={closeAll}>
-          <img src="/logo.png" alt="EventHive Logo" className="logo-img" />
+          <img src="/logo.png" alt="EventHive home" className="logo-img" />
           <span>EventHive</span>
         </Link>
 
@@ -154,7 +147,9 @@ const Navbar = () => {
         <button
           className="mobile-menu-toggle"
           onClick={toggleMenu}
-          aria-label="Toggle menu"
+          aria-label={isMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+          aria-expanded={isMenuOpen}
+          aria-controls="mobile-navigation-menu"
         >
           <div className={`hamburger-bar ${isMenuOpen ? "active" : ""}`}></div>
         </button>
@@ -220,7 +215,10 @@ const Navbar = () => {
       </div>
 
       {/* Centered FAB Menu Items - Mobile Only */}
-      <div className={`fab-menu-centered ${isMenuOpen ? "active" : ""}`}>
+      <div
+        id="mobile-navigation-menu"
+        className={`fab-menu-centered ${isMenuOpen ? "active" : ""}`}
+      >
         <Link to="/" className="fab-item-center" onClick={closeAll}>
           <div className="fab-icon-center">🏠</div>
           <span className="fab-label-center">Home</span>
@@ -252,7 +250,9 @@ const Navbar = () => {
         <button
           className={`fab-main-btn ${isMenuOpen ? "active" : ""}`}
           onClick={toggleMenu}
-          aria-label="Menu"
+          aria-label={isMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+          aria-expanded={isMenuOpen}
+          aria-controls="mobile-navigation-menu"
         >
           <div className="fab-burger"></div>
         </button>

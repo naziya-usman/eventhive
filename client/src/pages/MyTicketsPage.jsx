@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import api from '../utils/api';
+import { getApiErrorMessage } from '../utils/errorMessage';
 import { getImageUrl } from '../utils/getImageUrl';
 import { formatDate } from '../utils/formatDate';
 import LoadingSpinner from '../components/LoadingSpinner';
@@ -18,7 +19,7 @@ export default function MyTicketsPage() {
         const response = await api.get('/registrations/my-tickets');
         setTickets(response.data);
       } catch (err) {
-        setError(err.response?.data?.message || 'Failed to fetch tickets');
+        setError(getApiErrorMessage(err, 'Failed to fetch tickets'));
       } finally {
         setLoading(false);
       }
@@ -53,7 +54,10 @@ export default function MyTicketsPage() {
               className={`ticket-card ${printingId === ticket._id ? 'to-print' : ''} ${printingId && printingId !== ticket._id ? 'hide-on-print' : ''}`}
             >
               <div className="ticket-banner">
-                <img src={getImageUrl(ticket.event.bannerImage)} alt={ticket.event.title} />
+                <img
+                  src={getImageUrl(ticket.event.bannerImage)}
+                  alt={`${ticket.event.title} ticket event banner`}
+                />
               </div>
               
               <div className="ticket-content">
@@ -72,7 +76,7 @@ export default function MyTicketsPage() {
                 <div className="ticket-qr-section">
                   <img 
                     src={ticket.qrCodeData} 
-                    alt="QR Code" 
+                    alt={`QR code for ticket ${ticket.ticketId}`}
                     className="qr-code" 
                     style={{ width: 120 }} 
                   />

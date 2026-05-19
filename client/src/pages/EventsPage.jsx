@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import api from "../utils/api";
+import { getApiErrorMessage } from "../utils/errorMessage";
 import EventCard from "../components/EventCard";
 import LoadingSpinner from "../components/LoadingSpinner";
 import ErrorMessage from "../components/ErrorMessage";
@@ -41,7 +42,7 @@ const EventsPage = () => {
         setLoading(false);
       } catch (err) {
         console.error("Error fetching events:", err);
-        setError("Failed to load events. Please try again later.");
+        setError(getApiErrorMessage(err, "Failed to load events. Please try again later."));
         setLoading(false);
       }
     };

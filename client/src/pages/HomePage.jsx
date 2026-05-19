@@ -66,7 +66,10 @@ const HomePage = () => {
           <div className="container">
             <div className="spotlight-card">
               <div className="spotlight-image">
-                <img src={getImageUrl(featuredEvent.bannerImage) || heroImg} alt={featuredEvent.title} />
+                <img
+                  src={getImageUrl(featuredEvent.bannerImage) || heroImg}
+                  alt={`${featuredEvent.title} featured event banner`}
+                />
                 <div className="spotlight-tag">Editor's Choice</div>
               </div>
               <div className="spotlight-info">
@@ -182,7 +185,7 @@ const HomePage = () => {
             <div className="host-image-container">
               <img 
                 src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" 
-                alt="Aesthetic concert lighting" 
+                alt="Crowd at a live concert with stage lighting" 
                 className="host-img"
               />
               <div className="host-animation-overlay">

@@ -1,4 +1,5 @@
 const Event = require("../models/Event");
+const { handleControllerError, sendServerError } = require("../utils/errorResponses");
 
 // @desc    Get all events
 // @route   GET /api/events
@@ -41,7 +42,7 @@ exports.getEvents = async (req, res) => {
         const events = await Event.find(filter).sort({ date: 1 });
         res.status(200).json(events);
     } catch (error) {
-        res.status(500).json({ message: "Server error", error: error.message });
+        sendServerError(res);
     }
 };
 
@@ -52,11 +53,13 @@ exports.getEventById = async (req, res) => {
     try {
         const event = await Event.findById(req.params.id).populate("organiser", "name email");
         if (!event) {
-            return res.status(404).json({ message: "Event not found" });
+            return res.status(404).json({
+                message: "Event not found. It may have been removed or the link is incorrect.",
+            });
         }
         res.status(200).json(event);
     } catch (error) {
-        res.status(500).json({ message: "Server error", error: error.message });
+        handleControllerError(res, error);
     }
 };
 
@@ -78,7 +81,7 @@ exports.createEvent = async (req, res) => {
         const event = await Event.create(eventData);
         res.status(201).json(event);
     } catch (error) {
-        res.status(400).json({ message: "Invalid event data", error: error.message });
+        handleControllerError(res, error);
     }
 };
 
@@ -90,7 +93,9 @@ exports.updateEvent = async (req, res) => {
         let event = await Event.findById(req.params.id);
 
         if (!event) {
-            return res.status(404).json({ message: "Event not found" });
+            return res.status(404).json({
+                message: "Event not found. It may have been removed or the link is incorrect.",
+            });
         }
 
         // Check if user is event organiser
@@ -110,7 +115,7 @@ exports.updateEvent = async (req, res) => {
 
         res.status(200).json(event);
     } catch (error) {
-        res.status(500).json({ message: "Server error", error: error.message });
+        handleControllerError(res, error);
     }
 };
 
@@ -122,7 +127,9 @@ exports.deleteEvent = async (req, res) => {
         const event = await Event.findById(req.params.id);
 
         if (!event) {
-            return res.status(404).json({ message: "Event not found" });
+            return res.status(404).json({
+                message: "Event not found. It may have been removed or the link is incorrect.",
+            });
         }
 
         // Check if user is event organiser
@@ -134,6 +141,6 @@ exports.deleteEvent = async (req, res) => {
 
         res.status(200).json({ message: "Event removed" });
     } catch (error) {
-        res.status(500).json({ message: "Server error", error: error.message });
+        handleControllerError(res, error);
     }
 };

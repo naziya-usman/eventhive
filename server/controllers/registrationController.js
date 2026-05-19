@@ -4,6 +4,7 @@ const { v4: uuidv4 } = require("uuid");
 const QRCode = require("qrcode");
 const sendEmail = require("../utils/sendEmail");
 const { ticketConfirmationHTML } = require("../utils/emailTemplates");
+const { handleControllerError, sendServerError } = require("../utils/errorResponses");
 
 // @desc    Register for an event
 // @route   POST /api/registrations/:id
@@ -16,7 +17,9 @@ exports.registerForEvent = async (req, res) => {
         // 1) Find event by req.params.id — return 404 if not found
         const event = await Event.findById(eventId);
         if (!event) {
-            return res.status(404).json({ message: "Event not found" });
+            return res.status(404).json({
+                message: "Event not found. It may have been removed or the link is incorrect.",
+            });
         }
 
         // 2) Check event.date > new Date() — return 400 "Event has already passed" if not
@@ -26,7 +29,9 @@ exports.registerForEvent = async (req, res) => {
 
         // 3) Check event.registeredCount < event.capacity — return 400 "Event is full" if not
         if (event.registeredCount >= event.capacity) {
-            return res.status(400).json({ message: "Event is full" });
+            return res.status(400).json({
+                message: `This event is full. All ${event.capacity} spots have already been taken.`,
+            });
         }
 
         // 4) Check no existing Registration with this event and attendee combo — return 409 "Already registered" if found
@@ -35,7 +40,9 @@ exports.registerForEvent = async (req, res) => {
             attendee: attendeeId,
         });
         if (existingRegistration) {
-            return res.status(409).json({ message: "Already registered" });
+            return res.status(409).json({
+                message: "You are already registered for this event. Check My Tickets for your confirmation.",
+            });
         }
 
         // 5) Generate ticketId using the uuid v4 function
@@ -97,7 +104,7 @@ exports.registerForEvent = async (req, res) => {
         // 10) Return the saved registration as JSON
         res.status(201).json(registration);
     } catch (error) {
-        res.status(500).json({ message: "Server error", error: error.message });
+        handleControllerError(res, error);
     }
 };
 
@@ -109,7 +116,7 @@ exports.getMyTickets = async (req, res) => {
         const registrations = await Registration.find({ attendee: req.user.id }).populate("event");
         res.status(200).json(registrations);
     } catch (error) {
-        res.status(500).json({ message: "Server error", error: error.message });
+        sendServerError(res);
     }
 };
 
@@ -137,6 +144,6 @@ exports.cancelRegistration = async (req, res) => {
 
         res.status(200).json({ message: "Registration cancelled successfully" });
     } catch (error) {
-        res.status(500).json({ message: "Server error", error: error.message });
+        handleControllerError(res, error);
     }
 };

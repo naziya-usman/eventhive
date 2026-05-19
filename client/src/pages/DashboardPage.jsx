@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import api from "../utils/api";
+import { getApiErrorMessage } from "../utils/errorMessage";
 import { getUser } from "../utils/auth";
 import { formatDate } from "../utils/formatDate";
 import { getImageUrl } from "../utils/getImageUrl";
 import CreateEventForm from "../components/CreateEventForm";
+import ErrorMessage from "../components/ErrorMessage";
 import "../styles/DashboardPage.css"; 
 
 const DashboardPage = () => {
@@ -24,7 +26,7 @@ const DashboardPage = () => {
       );
       setEvents(myEvents);
     } catch (err) {
-      setError("Failed to fetch events");
+      setError(getApiErrorMessage(err, "Failed to fetch events"));
       console.error(err);
     } finally {
       setLoading(false);
@@ -41,7 +43,7 @@ const DashboardPage = () => {
         await api.delete(`/events/${id}`);
         fetchEvents(); // Re-fetch on success
       } catch (err) {
-        alert("Failed to delete event");
+        alert(getApiErrorMessage(err, "Failed to delete event"));
       }
     }
   };
@@ -126,6 +128,8 @@ const DashboardPage = () => {
           </div>
         )}
 
+        {error && <ErrorMessage message={error} />}
+
         <main className="saas-main-list">
           <div className="list-header">
             <div className="col-event">Event Details</div>
@@ -142,7 +146,7 @@ const DashboardPage = () => {
                       <div className="row-img-thumb">
                         <img 
                           src={event.bannerImage ? getImageUrl(event.bannerImage) : "https://via.placeholder.com/100"} 
-                          alt="" 
+                          alt={`${event.title} event thumbnail`}
                         />
                       </div>
                       <div className="row-text-details">

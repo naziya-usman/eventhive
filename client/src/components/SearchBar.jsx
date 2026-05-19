@@ -22,14 +22,19 @@ const SearchBar = ({ onSearch, initialValue = "" }) => {
 
   return (
     <div className="search-bar-container">
+      <label htmlFor="event-search" className="sr-only">
+        Search events by title
+      </label>
       <input
         type="text"
+        id="event-search"
+        name="event-search"
         placeholder="Search events by title..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         className="search-input"
       />
-      <div className="search-icon">
+      <div className="search-icon" aria-hidden="true">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"

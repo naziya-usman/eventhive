@@ -21,7 +21,11 @@ const EventCard = ({ event }) => {
     <Link to={`/events/${_id}`} className="editorial-card-link">
       <div className="editorial-card">
         <div className="editorial-visual">
-          <img src={bannerSrc} alt={title} className="editorial-img" />
+          <img
+            src={bannerSrc}
+            alt={`${title} event banner in ${location}`}
+            className="editorial-img"
+          />
           
           <div className="editorial-top-chips">
             <span className="chip category">{category}</span>

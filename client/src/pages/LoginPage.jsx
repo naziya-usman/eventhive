@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import api from '../utils/api';
 import { setAuth } from '../utils/auth';
+import { getApiErrorMessage } from '../utils/errorMessage';
 import '../styles/LoginPage.css'; 
 
 const LoginPage = () => {
@@ -28,7 +29,7 @@ const LoginPage = () => {
       alert('Login successful!');
       navigate('/');
     } catch (err) {
-      setError(err.response?.data?.message || 'Something went wrong. Please try again.');
+      setError(getApiErrorMessage(err, 'Login failed. Please try again.'));
     } finally {
       setLoading(false);
     }
@@ -46,9 +47,13 @@ const LoginPage = () => {
             <input
               type="email"
               id="email"
+              name="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="name@example.com"
+              autoComplete="email"
+              aria-invalid={error ? "true" : "false"}
+              aria-describedby={error ? "login-error" : undefined}
               required
             />
           </div>
@@ -58,14 +63,18 @@ const LoginPage = () => {
             <input
               type="password"
               id="password"
+              name="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
+              autoComplete="current-password"
+              aria-invalid={error ? "true" : "false"}
+              aria-describedby={error ? "login-error" : undefined}
               required
             />
           </div>
           
-          {error && <p className="error-message">{error}</p>}
+          {error && <p id="login-error" className="error-message">{error}</p>}
           
           <button type="submit" className="auth-btn" disabled={loading}>
             {loading ? 'Logging in...' : 'Login'}

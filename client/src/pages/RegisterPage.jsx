@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import api from '../utils/api';
 import { setAuth } from '../utils/auth';
+import { getApiErrorMessage } from '../utils/errorMessage';
 import '../styles/LoginPage.css';  // Reusing styles for consistency
 
 const RegisterPage = () => {
@@ -48,7 +49,7 @@ const RegisterPage = () => {
       alert('Registration successful!');
       navigate('/');
     } catch (err) {
-      setError(err.response?.data?.message || 'Registration failed. Please try again.');
+      setError(getApiErrorMessage(err, 'Registration failed. Please try again.'));
     } finally {
       setLoading(false);
     }
@@ -114,11 +115,12 @@ const RegisterPage = () => {
           </div>
 
           <div className="form-group">
-            <label>I am an:</label>
+            <span className="form-label">I am an:</span>
             <div className="radio-group">
-              <label className="radio-label">
+              <label className="radio-label" htmlFor="role-attendee">
                 <input
                   type="radio"
+                  id="role-attendee"
                   name="role"
                   value="attendee"
                   checked={role === 'attendee'}
@@ -126,9 +128,11 @@ const RegisterPage = () => {
                 />
                 Attendee
               </label>
-              <label className="radio-label">
+
+              <label className="radio-label" htmlFor="role-organiser">
                 <input
                   type="radio"
+                  id="role-organiser"
                   name="role"
                   value="organiser"
                   checked={role === 'organiser'}

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import api from '../utils/api';
+import { getApiErrorMessage } from '../utils/errorMessage';
 import '../styles/DashboardPage.css'; 
 
 const CreateEventForm = ({ onSuccess, eventToEdit = null }) => {
@@ -51,7 +52,7 @@ const CreateEventForm = ({ onSuccess, eventToEdit = null }) => {
       }
       onSuccess();
     } catch (err) {
-      setError(err.response?.data?.message || `Failed to ${isEditing ? 'update' : 'create'} event. Please try again.`);
+      setError(getApiErrorMessage(err, `Failed to ${isEditing ? 'update' : 'create'} event. Please try again.`));
     } finally {
       setLoading(false);
     }

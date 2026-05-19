@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import api from "../utils/api";
+import { getApiErrorMessage } from "../utils/errorMessage";
 import { formatDate } from "../utils/formatDate";
 import { getImageUrl } from "../utils/getImageUrl";
 import LoadingSpinner from "../components/LoadingSpinner";
@@ -14,6 +15,7 @@ const EventDetailPage = () => {
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [registrationError, setRegistrationError] = useState("");
   const [registering, setRegistering] = useState(false);
 
   useEffect(() => {
@@ -25,9 +27,7 @@ const EventDetailPage = () => {
         setLoading(false);
       } catch (err) {
         console.error("Error fetching event details:", err);
-        setError(
-          err.response?.data?.message || "Failed to load event details.",
-        );
+        setError(getApiErrorMessage(err, "Failed to load event details."));
         setLoading(false);
       }
     };
@@ -45,6 +45,7 @@ const EventDetailPage = () => {
 
     try {
       setRegistering(true);
+      setRegistrationError("");
       const response = await api.post(`/registrations/${id}`);
       toast.success(
         `Registered successfully! Ticket ID: ${response.data.ticketId}`,
@@ -53,14 +54,9 @@ const EventDetailPage = () => {
       const updatedEvent = await api.get(`/events/${id}`);
       setEvent(updatedEvent.data);
     } catch (err) {
-      if (err.response?.status === 409) {
-        toast.error("You are already registered for this event.");
-      } else {
-        toast.error(
-          err.response?.data?.message ||
-            "Registration failed. Please try again.",
-        );
-      }
+      setRegistrationError(
+        getApiErrorMessage(err, "Registration failed. Please try again."),
+      );
     } finally {
       setRegistering(false);
     }
@@ -83,15 +79,15 @@ const EventDetailPage = () => {
 
   return (
     <div className="minimal-split-page">
-      <button onClick={() => navigate(-1)} className="floating-back-btn" title="Go back">
-        ←
-      </button>
-
       <div className="split-container">
         {/* Left Side: The "Pin" Image */}
         <div className="split-visual">
           <div className="pin-image-wrapper">
-            <img src={bannerSrc} alt={event.title} className="pin-image" />
+            <img
+              src={bannerSrc}
+              alt={`${event.title} event banner at ${event.location}`}
+              className="pin-image"
+            />
             <div className="pin-category">{event.category}</div>
           </div>
         </div>
@@ -107,14 +103,16 @@ const EventDetailPage = () => {
                 </span>
               </div>
               <h1 className="details-title">{event.title}</h1>
-              
+
               <div className="organiser-minimal">
                 <div className="mini-avatar">
                   {event.organiser?.name?.charAt(0) || "O"}
                 </div>
                 <div className="mini-info">
                   <span className="hosted-by">Hosted by</span>
-                  <span className="host-name">{event.organiser?.name || "EventHive"}</span>
+                  <span className="host-name">
+                    {event.organiser?.name || "EventHive"}
+                  </span>
                 </div>
               </div>
             </header>
@@ -147,10 +145,20 @@ const EventDetailPage = () => {
 
             {/* Floating/Fixed Action Area */}
             <div className="action-footer">
+              {registrationError && (
+                <p className="registration-error" role="alert">
+                  {registrationError}
+                </p>
+              )}
               <button
                 className={`minimal-register-btn ${isFull ? "disabled" : ""}`}
                 onClick={handleRegister}
                 disabled={isFull || registering}
+                aria-label={
+                  isFull
+                    ? `${event.title} is fully booked`
+                    : `Register for ${event.title}`
+                }
               >
                 {registering
                   ? "Processing..."
