@@ -29,7 +29,7 @@ const app = express();
  * cors(): Allows requests from different origins (essential for frontend-backend communication).
  * express.json(): Parses incoming JSON requests, making the data available in req.body.
  */
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+app.use(cors());
 app.use(express.json());
 
 // Serve static files from the 'public' directory
