@@ -239,7 +239,11 @@ button {
 :root[data-theme="dark"] .auth-btn,
 :root[data-theme="dark"] .aesthetic-submit-btn,
 :root[data-theme="dark"] .chip.category,
-:root[data-theme="dark"] .host-card {
+:root[data-theme="dark"] .host-card,
+:root[data-theme="dark"] .print-btn,
+:root[data-theme="dark"] .saas-btn-primary,
+:root[data-theme="dark"] .login-btn,
+:root[data-theme="dark"] .register-btn {
   background: linear-gradient(135deg, #2a2438, #5b4a86);
   color: #ffffff;
 }
@@ -250,10 +254,30 @@ button {
 :root[data-theme="dark"] .clear-all-pill,
 :root[data-theme="dark"] .date-pill,
 :root[data-theme="dark"] .price-pill,
-:root[data-theme="dark"] .editorial-date-chip {
+:root[data-theme="dark"] .editorial-date-chip,
+:root[data-theme="dark"] .action-btn.edit,
+:root[data-theme="dark"] .action-btn.delete {
   background: var(--surface-muted);
   border-color: var(--border);
   color: var(--text-main);
+}
+
+:root[data-theme="dark"] .action-btn.edit {
+  color: #b89cff;
+  border-color: rgba(184, 156, 255, 0.3);
+}
+
+:root[data-theme="dark"] .action-btn.delete {
+  color: #ff8fab;
+  border-color: rgba(255, 143, 171, 0.3);
+}
+
+:root[data-theme="dark"] .action-btn.edit:hover {
+  background: rgba(184, 156, 255, 0.15);
+}
+
+:root[data-theme="dark"] .action-btn.delete:hover {
+  background: rgba(255, 143, 171, 0.15);
 }
 
 :root[data-theme="dark"] .stat-value,

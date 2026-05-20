@@ -182,7 +182,7 @@
 
 .editorial-card:hover .editorial-content-glass {
   transform: translateY(-5px);
-  background: white;
+  background: var(--surface-solid);
 }
 
 .editorial-card:hover .editorial-action {
