@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import api from '../utils/api';
 import { setAuth } from '../utils/auth';
 import { getApiErrorMessage } from '../utils/errorMessage';
+import AuthEventVisual from '../components/AuthEventVisual';
 import '../styles/LoginPage.css';  // Reusing styles for consistency
 
 const RegisterPage = () => {
@@ -154,6 +155,7 @@ const RegisterPage = () => {
           Already have an account? <Link to="/login">Login here</Link>
         </p>
       </div>
+      <AuthEventVisual />
     </div>
   );
 };

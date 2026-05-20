@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import api from '../utils/api';
 import { setAuth } from '../utils/auth';
 import { getApiErrorMessage } from '../utils/errorMessage';
+import AuthEventVisual from '../components/AuthEventVisual';
 import '../styles/LoginPage.css'; 
 
 const LoginPage = () => {
@@ -85,6 +86,7 @@ const LoginPage = () => {
           Don't have an account? <Link to="/register">Register here</Link>
         </p>
       </div>
+      <AuthEventVisual />
     </div>
   );
 };
