@@ -14,7 +14,9 @@ export const getImageUrl = (path) => {
   }
   
   // Base URL for the backend
-  const baseUrl = 'http://localhost:5000';
+  const baseUrl = import.meta.env.VITE_API_URL 
+    ? import.meta.env.VITE_API_URL.replace(/\/api$/, '') 
+    : (import.meta.env.PROD ? window.location.origin : 'http://localhost:5000');
   
   // 2. Convert all backslashes to forward slashes (Windows fix)
   let cleanPath = path.replace(/\\/g, '/');

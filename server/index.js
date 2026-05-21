@@ -66,6 +66,12 @@ app.get("/api/health", (req, res) => {
  * This separation allows for flexible deployment configurations.
  */
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+
+// Export the app for serverless environments (like Vercel)
+module.exports = app;
+
+if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+    app.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}`);
+    });
+}
